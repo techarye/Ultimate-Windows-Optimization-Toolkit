@@ -1,6 +1,95 @@
-import subprocess
-import sys
+import os
 import ctypes
+import subprocess
+
+# Aggressive bloatware list for Windows 10/11
+BLOATWARE_APPS = [
+    # Microsoft/Windows Apps
+    "Microsoft.3DBuilder",
+    "Microsoft.BingNews",
+    "Microsoft.BingWeather",
+    "Microsoft.GetHelp",
+    "Microsoft.Getstarted",
+    "Microsoft.Microsoft3DViewer",
+    "Microsoft.MicrosoftOfficeHub",
+    "Microsoft.MicrosoftSolitaireCollection",
+    "Microsoft.MicrosoftStickyNotes",
+    "Microsoft.MixedReality.Portal",
+    "Microsoft.OneConnect",
+    "Microsoft.People",
+    "Microsoft.Print3D",
+    "Microsoft.SkypeApp",
+    "Microsoft.Wallet",
+    "Microsoft.WindowsAlarms",
+    "Microsoft.WindowsCamera",
+    "Microsoft.WindowsFeedbackHub",
+    "Microsoft.WindowsMaps",
+    "Microsoft.WindowsSoundRecorder",
+    "Microsoft.Xbox.TCUI",
+    "Microsoft.XboxApp",
+    "Microsoft.XboxGameOverlay",
+    "Microsoft.XboxGamingOverlay",
+    "Microsoft.XboxIdentityProvider",
+    "Microsoft.XboxSpeechToTextOverlay",
+    "Microsoft.YourPhone",
+    "Microsoft.ZuneMusic",
+    "Microsoft.ZuneVideo",
+    "MicrosoftTeams",
+    "Microsoft.OneDrive",
+    "Microsoft.GamingApp",
+    "Microsoft.Todos",
+    "Microsoft.PowerAutomateDesktop",
+    "Microsoft.MSPaint",
+    "Microsoft.ScreenSketch",
+    "Microsoft.HEIFImageExtension",
+    "Microsoft.HEVCVideoExtension",
+    "Microsoft.WebMediaExtensions",
+    "Microsoft.WebpImageExtension",
+    "Microsoft.VP9VideoExtensions",
+    "Microsoft.PeopleExperienceHost",
+    "Microsoft.549981C3F5F10",  # Cortana
+    "Microsoft.BingFinance",
+    "Microsoft.BingSports",
+    "Microsoft.BingTravel",
+    "Microsoft.Office.OneNote",
+    "Microsoft.Office.Sway",
+    "Microsoft.MinecraftUWP",
+    "Microsoft.MicrosoftEdge.Stable",
+    "Microsoft.MicrosoftEdgeDevToolsClient",
+    "Microsoft.MicrosoftEdgeBeta",
+    "Microsoft.MicrosoftEdgeCanary",
+    "Microsoft.MicrosoftEdgeWebView",
+    "Microsoft.WindowsReadingList",
+    "Microsoft.WindowsTerminal",
+    "Microsoft.WindowsStore",
+    "Microsoft.Windows.Photos",
+    "Microsoft.WindowsCalculator",
+    "Microsoft.WindowsCommunicationsApps",  # Mail & Calendar
+    # Third-party and OEM
+    "SpotifyAB.SpotifyMusic",
+    "Disney.37853FC22B2CE",
+    "DolbyLaboratories.DolbyAccess",
+    "Facebook.Facebook",
+    "king.com.CandyCrushSaga",
+    "king.com.CandyCrushSodaSaga",
+    "king.com.FarmHeroesSaga",
+    "A278AB0D.MarchofEmpires",
+    "GAMELOFTSA.Asphalt8Airborne",
+    "KeeperSecurityInc.Keeper",
+    "PandoraMediaInc.29680B314EFC2",
+    "SlingTVLLC.SlingTV",
+    "Twitter.Twitter",
+    "Flipboard.Flipboard",
+    "ShazamEntertainmentLtd.Shazam",
+    "AdobeSystemsIncorporated.AdobePhotoshopExpress",
+    "Duolingo-LearnLanguagesforFree",
+    "EclipseManager",
+    "ActiproSoftwareLLC.562882FEEB491",
+    "D5EA27B7.Duolingo-LearnLanguagesforFree",
+]
+
+# Remove duplicates, just in case
+BLOATWARE_APPS = list(set(BLOATWARE_APPS))
 
 def is_admin():
     try:
@@ -8,140 +97,50 @@ def is_admin():
     except:
         return False
 
-def run_powershell(cmd):
-    try:
-        completed = subprocess.run(["powershell", "-Command", cmd], capture_output=True, text=True, check=True)
-        print(completed.stdout)
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing: {cmd}\n{e}")
-
 def remove_bloatware():
-    print("Removing common Windows bloatware apps...")
+    print("Starting BIG Bloatware Remover for Windows 10/11...")
+    for app in BLOATWARE_APPS:
+        print(f"  Removing {app}...")
+        cmd = f'powershell -Command "Get-AppxPackage *{app}* | Remove-AppxPackage"'
+        try:
+            subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            print(f"    Could not remove {app} (may not be installed or already removed).")
+    # Remove provisioned apps for new users
+    print("Removing provisioned apps for new users...")
+    for app in BLOATWARE_APPS:
+        cmd = f'powershell -Command "Get-AppxProvisionedPackage -Online | Where-Object {{$_.PackageName -like \'*{app}*\'}} | Remove-AppxProvisionedPackage -Online"'
+        try:
+            subprocess.run(cmd, shell=True, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except Exception:
+            pass
+    print("Bloatware removal complete!")
 
-    # 1. Remove Xbox app
-    print("1. Removing Xbox App")
-    run_powershell("Get-AppxPackage *xboxapp* | Remove-AppxPackage")
+def main():
+    if not is_admin():
+        print("This script requires administrator privileges. Please run as admin.")
+        return
 
-    # 2. Remove Candy Crush
-    print("2. Removing Candy Crush")
-    run_powershell("Get-AppxPackage *candycrush* | Remove-AppxPackage")
+    print("WARNING: This will attempt to remove most pre-installed Windows apps for all users.")
+    confirm = input("Are you sure you want to continue? (yes/no): ").strip().lower()
+    if confirm != "yes":
+        print("Operation cancelled.")
+        return
 
-    # 3. Remove Microsoft Solitaire Collection
-    print("3. Removing Microsoft Solitaire Collection")
-    run_powershell("Get-AppxPackage *solitairecollection* | Remove-AppxPackage")
+    remove_bloatware()
+    print("Tweak applied. Please restart your PC for full effect.")
 
-    # 4. Remove Microsoft People app
-    print("4. Removing People app")
-    run_powershell("Get-AppxPackage *people* | Remove-AppxPackage")
-
-    # 5. Remove Microsoft Sticky Notes
-    print("5. Removing Sticky Notes")
-    run_powershell("Get-AppxPackage *stickynotes* | Remove-AppxPackage")
-
-    # 6. Remove Microsoft Photos
-    print("6. Removing Microsoft Photos")
-    run_powershell("Get-AppxPackage *photos* | Remove-AppxPackage")
-
-    # 7. Remove Groove Music
-    print("7. Removing Groove Music")
-    run_powershell("Get-AppxPackage *zunemusic* | Remove-AppxPackage")
-
-    # 8. Remove Movies & TV
-    print("8. Removing Movies & TV")
-    run_powershell("Get-AppxPackage *zunevideo* | Remove-AppxPackage")
-
-    # 9. Remove Weather app
-    print("9. Removing Weather app")
-    run_powershell("Get-AppxPackage *bingweather* | Remove-AppxPackage")
-
-    # 10. Remove News app
-    print("10. Removing News app")
-    run_powershell("Get-AppxPackage *bingnews* | Remove-AppxPackage")
-
-    # 11. Remove Microsoft Office Hub
-    print("11. Removing Office Hub")
-    run_powershell("Get-AppxPackage *officehub* | Remove-AppxPackage")
-
-    # 12. Remove Skype app
-    print("12. Removing Skype")
-    run_powershell("Get-AppxPackage *skypeapp* | Remove-AppxPackage")
-
-    # 13. Remove 3D Builder
-    print("13. Removing 3D Builder")
-    run_powershell("Get-AppxPackage *3dbuilder* | Remove-AppxPackage")
-
-    # 14. Remove Mixed Reality Portal
-    print("14. Removing Mixed Reality Portal")
-    run_powershell("Get-AppxPackage *mixedrealityportal* | Remove-AppxPackage")
-
-    # 15. Remove People app (duplicate check)
-    print("15. Removing People app (duplicate)")
-    run_powershell("Get-AppxPackage *people* | Remove-AppxPackage")
-
-    # 16. Remove Feedback Hub
-    print("16. Removing Feedback Hub")
-    run_powershell("Get-AppxPackage *feedbackhub* | Remove-AppxPackage")
-
-    # 17. Remove Maps
-    print("17. Removing Maps app")
-    run_powershell("Get-AppxPackage *windowsmaps* | Remove-AppxPackage")
-
-    # 18. Remove OneNote
-    print("18. Removing OneNote")
-    run_powershell("Get-AppxPackage *onenote* | Remove-AppxPackage")
-
-    # 19. Remove Paint 3D
-    print("19. Removing Paint 3D")
-    run_powershell("Get-AppxPackage *paint3d* | Remove-AppxPackage")
-
-    # 20. Remove Xbox Game Overlay
-    print("20. Removing Xbox Game Overlay")
-    run_powershell("Get-AppxPackage *gamingoverlay* | Remove-AppxPackage")
-
-    # 21. Remove Xbox Game Speech Window
-    print("21. Removing Xbox Game Speech Window")
-    run_powershell("Get-AppxPackage *gamingservices* | Remove-AppxPackage")
-
-    # 22. Remove Cortana
-    print("22. Removing Cortana")
-    run_powershell("Get-AppxPackage *cortana* | Remove-AppxPackage")
-
-    # 23. Remove Microsoft Store (optional, be cautious)
-    print("23. Removing Microsoft Store (optional)")
-    run_powershell("Get-AppxPackage *windowsstore* | Remove-AppxPackage")
-
-    # 24. Remove Mixed Reality Services
-    print("24. Removing Mixed Reality Services")
-    run_powershell("Get-AppxPackage *windowscommunicationsapps* | Remove-AppxPackage")
-
-    # 25. Remove Voice Recorder
-    print("25. Removing Voice Recorder")
-    run_powershell("Get-AppxPackage *soundrecorder* | Remove-AppxPackage")
-
-    # 26. Remove Alarms & Clock
-    print("26. Removing Alarms & Clock")
-    run_powershell("Get-AppxPackage *windowsalarms* | Remove-AppxPackage")
-
-    # 27. Remove Messaging
-    print("27. Removing Messaging")
-    run_powershell("Get-AppxPackage *messaging* | Remove-AppxPackage")
-
-    # 28. Remove Mail and Calendar
-    print("28. Removing Mail and Calendar")
-    run_powershell("Get-AppxPackage *windowscommunicationsapps* | Remove-AppxPackage")
-
-    # 29. Remove Xbox Identity Provider
-    print("29. Removing Xbox Identity Provider")
-    run_powershell("Get-AppxPackage *xboxidentityprovider* | Remove-AppxPackage")
-
-    # 30. Remove People Experience Host
-    print("30. Removing People Experience Host")
-    run_powershell("Get-AppxPackage *peopleexperiencehost* | Remove-AppxPackage")
-
-    print("\nBloatware removal completed. Restart your PC to finalize.")
+    while True:
+        restart = input("Do you want to restart now to apply all changes? (yes/no): ").strip().lower()
+        if restart == "yes":
+            print("Restarting your computer...")
+            os.system("shutdown /r /t 3")
+            break
+        elif restart == "no":
+            print("Returning to main script. Please restart later for full effect.")
+            break
+        else:
+            print("Please enter 'yes' or 'no'.")
 
 if __name__ == "__main__":
-    if not is_admin():
-        print("Please run this script as Administrator!")
-        sys.exit(1)
-    remove_bloatware()
+    main()
