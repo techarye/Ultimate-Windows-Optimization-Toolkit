@@ -1,98 +1,103 @@
 # Ultimate Windows Optimization Toolkit
 
 A comprehensive all-in-one toolkit designed to supercharge your Windows experience.  
-With 250+ powerful tweaks across multiple categories—General Tweaks, Gamer Tweaks, Remove Bloatware, and more—this toolkit helps optimize performance, enhance privacy, remove unnecessary system clutter, and customize your OS effortlessly.
+With over **250 powerful tweaks per category**, this toolkit optimizes performance, enhances privacy, reduces system bloat, and customizes your OS effortlessly.
 
-...
+---
 
-## Important Notice About Antivirus Software
+## 🚨 Antivirus Notice
 
-Some antivirus programs may flag or delete the launcher executable (`UltimateWindowsTweaks.exe`) as a false positive.  
-**If this happens, please temporarily disable your antivirus software before running the toolkit.**  
+Some antivirus programs may **falsely flag or delete** the launcher executable (`UltimateWindowsTweaks.exe`).  
+If this occurs, **temporarily disable your antivirus** before running the toolkit.  
+This is a known issue and will be addressed in a future update.
 
-This issue is known and will be addressed in a future update. Your patience and understanding are appreciated.
+---
 
-...
+## ✨ Features
 
-## Features
+- 250+ system tweaks per category  
+- Modular structure using Python and Batch scripts  
+- Clean launcher menu for quick access  
+- Ideal for gamers, power users, professionals, and enthusiasts  
+- Safe, transparent tweak scripts (fully open-source)
 
-- Extensive collection of Windows tweaks (250+ per category)  
-- Modular Python and batch script implementation  
-- Easy-to-use UltimateWindowsTweaks for quick access  
-- Ideal for gamers, power users, and anyone who wants the best from Windows  
+---
 
-## Installation
+## 🔧 Installation
 
 1. Clone or download this repository.  
-2. Run the UltimateWindowsTweaks script (`UltimateWindowsTweaks.exe`) to start customizing your system.  
-3. Follow on-screen instructions for applying tweaks.
-
-## Usage
-
-- Choose a category of tweaks you want to apply.  
-- Apply tweaks individually or in bulk as per your preference.  
-- Restart your system if prompted to finalize changes.
+2. Run `UltimateWindowsTweaks.exe` (the launcher).  
+3. Follow the on-screen instructions to apply tweaks by category.
 
 ---
 
-## Project Structure
+## 🧩 Usage
 
-UltimateWindowsTweaks
-│
-├── UltimateWindowsTweaks.exe # UltimateWindowsTweaks batch script
-├── install_python.ps1 # PowerShell script to install Python (optional)
-│
-├── data\categories\ # Python tweak scripts by category
-│ ├── general_tweaks.py
-│ ├── gamer_tweaks.py
-│ ├── business_tweaks.py
-│ ├── work_tweaks.py
-│ ├── storage_tweaks.py
-│ ├── cpu_network_security_tweaks.py
-│ ├── programmer_tweaks.py
-│ └── remove_bloatware.py
-│
-└── README.md # This file
-
-yaml
-Copier
-Modifier
+- Choose a tweak category from the menu.  
+- Tweaks will be applied automatically via Python scripts.  
+- **Administrator privileges required** for most tweaks.  
+- Restart your PC after applying changes for best results.
 
 ---
 
-## License
+## 🗂 Project Structure
+
+```
+UltimateWindowsTweaks/
+│
+├── UltimateWindowsTweaks.exe       # Launcher (Batch → EXE)
+├── install_python.ps1              # Installs Python if missing
+│
+├── data/
+│   └── categories/                 # Python tweak modules
+│       ├── general_tweaks.py
+│       ├── gamer_tweaks.py
+│       ├── business_tweaks.py
+│       ├── work_tweaks.py
+│       ├── storage_tweaks.py
+│       ├── cpu_network_security_tweaks.py
+│       ├── programmer_tweaks.py
+│       └── remove_bloatware.py
+│
+└── README.md                       # This file
+```
+
+---
+
+## 📜 License
 
 **Ultimate Windows Optimization Toolkit License**  
-
-Copyright (c) 2025 techarye
-
+Copyright © 2025 [techarye](https://github.com/techarye)  
 All rights reserved.
 
-You are permitted to use and redistribute this software **only in its original, unmodified form**.  
-Modification, reverse engineering, or creation of derivative works is strictly prohibited.  
+You may use and share this toolkit **only in its original, unmodified form**.  
+Modification, reverse engineering, or derivative works are prohibited.
 
-For permissions beyond this license, please contact:  
-`rapidocorp2021.robergem@gmail.com`
-
----
-
-## Disclaimer
-
-Use this toolkit at your own risk. While extensive testing has been done, applying certain tweaks may affect system stability. Always back up your important data before proceeding.
+For permissions beyond this license, contact:  
+📧 `rapidocorp2021.robergem@gmail.com`
 
 ---
 
-## Contributions
+## ⚠ Disclaimer
 
-Due to license restrictions, modifications or pull requests with altered code cannot be accepted. For suggestions or feature requests, please open an issue.
-
----
-
-## Contact
-
-For questions or support, please reach out to:  
-`rapidocorp2021.robergem@gmail.com`
+Use this toolkit at your own risk.  
+While tested thoroughly, some tweaks may affect stability depending on your configuration.  
+**Always back up your data** or create a restore point before applying tweaks.
 
 ---
 
-Enjoy optimizing your Windows experience!
+## 💡 Contributions
+
+Due to the license, **pull requests that alter the core code** cannot be accepted.  
+However, suggestions, issues, and feature requests are always welcome!
+
+---
+
+## 📬 Contact
+
+For support, feedback, or inquiries, contact:  
+📧 `rapidocorp2021.robergem@gmail.com`
+
+---
+
+**Enjoy optimizing your Windows experience! 🚀**
